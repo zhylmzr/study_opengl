@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake",
+            "type": "shell",
+            "command": "cmake ../.",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "./build/main",
+            "dependsOn": [
+                "Build"
+            ]
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make clean",
+            "dependsOn": [
+                "cwd"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        }
+    ]
+}
