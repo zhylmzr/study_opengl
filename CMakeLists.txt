@@ -17,7 +17,11 @@ file(GLOB_RECURSE LIBS lib/*.c(c|pp))
 aux_source_directory(src DIR_SRCS)
 list(APPEND DIR_SRCS ${LIBS})
 
-find_package(glfw3 REQUIRED)
+if (NOT WIN32)
+    find_package(glfw3 REQUIRED)
+elseif (WIN32)
+    link_directories(lib)
+endif()
 
 add_executable(main ${DIR_SRCS})
 target_compile_options(main PUBLIC -g)
