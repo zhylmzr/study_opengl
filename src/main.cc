@@ -94,8 +94,8 @@ void init() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // 加载着色器
-    vertexShaderSource = openShader("./resources/shader/vertex.glsl");
-    fragmentShaderSource = openShader("./resources/shader/fragment.glsl");
+    vertexShaderSource = openShader("../resources/shader/vertex.glsl");
+    fragmentShaderSource = openShader("../resources/shader/fragment.glsl");
 
     // 着色器程序
     shaderProgram = LoadShader(&vertexShaderSource, &fragmentShaderSource);
@@ -122,7 +122,7 @@ void init() {
 
     stbi_set_flip_vertically_on_load(1);
     int width, height, nrChannels;
-    void *data = stbi_load("./resources/image/container.jpg", &width, &height, &nrChannels, 0);
+    void *data = stbi_load("../resources/image/container.jpg", &width, &height, &nrChannels, 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
@@ -135,7 +135,7 @@ void init() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    data = stbi_load("./resources/image/face.png", &width, &height, &nrChannels, 0);
+    data = stbi_load("../resources/image/face.png", &width, &height, &nrChannels, 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);

@@ -12,7 +12,7 @@
         {
             "label": "Run",
             "type": "shell",
-            "command": "./build/main",
+            "command": "cd build && ./main",
             "dependsOn": [
                 "Build"
             ]
