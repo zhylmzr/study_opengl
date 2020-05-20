@@ -1,10 +1,7 @@
-//
-// Created by zhylmzr on 2020/5/20.
-//
 #pragma once
 #include <iostream>
-#include <glm/glm.hpp>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class Shader {
 public:
