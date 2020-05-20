@@ -1,68 +1,20 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
-#include "tex.h"
+#include "shader.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
-char *vertexShaderSource = NULL;
-char *fragmentShaderSource = NULL;
-
-GLFWwindow *window;
-
-unsigned int LoadShader(char **vs, char **fs) {
-    // 顶点着色器
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, vs, NULL);
-    glCompileShader(vertexShader);
-
-    // 片段着色器
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, fs, NULL);
-    glCompileShader(fragmentShader);
-
-    // 着色器程序
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    return shaderProgram;
-}
 
 // 顶点数组对象
 unsigned int VAO;
 // 顶点缓冲对象
 unsigned int VBO;
-// 着色器程序
-unsigned int shaderProgram;
 // 顶点索引缓冲
 unsigned int EBO;
 // 纹理
 unsigned int texture;
 unsigned int texture2;
-
-char *openShader(const char* file) {
-    FILE *fp = fopen(file, "r");
-    fseek(fp, 0, SEEK_END);
-    int sz = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    char *buf = (char *)calloc(sz+1, 1);
-    fread(buf, sz, 1, fp);
-    fclose(fp);
-    return buf;
-}
-
-unsigned int uPoint;
-unsigned int uCompare;
 
 void init() {
     float vertices[] = {
@@ -93,13 +45,6 @@ void init() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // 加载着色器
-    vertexShaderSource = openShader("../resources/shader/vertex.glsl");
-    fragmentShaderSource = openShader("../resources/shader/fragment.glsl");
-
-    // 着色器程序
-    shaderProgram = LoadShader(&vertexShaderSource, &fragmentShaderSource);
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), NULL);
     glEnableVertexAttribArray(0);
 
@@ -108,10 +53,6 @@ void init() {
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7*sizeof(float)));
     glEnableVertexAttribArray(2);
-
-    glUseProgram(shaderProgram);
-    uPoint = glGetUniformLocation(shaderProgram, "uPoint");
-    uCompare = glGetUniformLocation(shaderProgram, "uCompare");
 
     glEnable(GL_BLEND);
     glGenTextures(1, &texture);
@@ -139,22 +80,22 @@ void init() {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
-    glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
 }
 
-float gPonitX = 0.0f;
-void draw() {
-    glUseProgram(shaderProgram);
+float gPointX = 0.0f;
+void draw(const Shader& shader) {
     glBindVertexArray(VAO);
 
-    glUniform3f(uPoint, gPonitX, 0.0f, 0.0f);
+    shader.setInt("texture2", 1);
+
+    shader.setVec3("uPoint", gPointX, 0.0f, 0.0f);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture2);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    glUniform3f(uPoint, 0.5f, 0.0f, 0.0f);
+    shader.setVec3("uPoint", 0.5f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, texture2);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -164,7 +105,7 @@ void frame_change_callback(GLFWwindow *window, int width, int height) {
 }
 
 float gCompare = 0.0f;
-void processInput(GLFWwindow *window) {
+void processInput(GLFWwindow *window, const Shader& shader) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
     ((glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS) && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)) {
         glfwSetWindowShouldClose(window, 1);
@@ -175,25 +116,25 @@ void processInput(GLFWwindow *window) {
         if (gCompare >= 1.0f) {
             gCompare = 1.0f;
         }
-        glUniform1f(uCompare, gCompare);
+        shader.setFloat("uCompare", gCompare);
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         gCompare -= 0.01f;
         if (gCompare <= 0.0f) {
             gCompare = 0.0f;
         }
-        glUniform1f(uCompare, gCompare);
+        shader.setFloat("uCompare", gCompare);
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-        gPonitX -= 0.01f;
-        if (gPonitX <= -1.5f) {
-            gPonitX = -1.5f;
+        gPointX -= 0.01f;
+        if (gPointX <= -1.5f) {
+            gPointX = -1.5f;
         }
     }
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-        gPonitX += 0.01f;
-        if (gPonitX >= 1.5f) {
-            gPonitX = 1.5f;
+        gPointX += 0.01f;
+        if (gPointX >= 1.5f) {
+            gPointX = 1.5f;
         }
     }
 }
@@ -206,23 +147,27 @@ int main(int argc, char ** args) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     // glfwWindowHint(GLFW_SAMPLES, 4);
-    
+
     GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Tutorial", NULL, NULL);
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, frame_change_callback);
-    
+
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
     // glEnable(GL_MULTISAMPLE);
 
     init();
+
+    Shader shader("../resources/shader/vertex.glsl", "../resources/shader/fragment.glsl");
+    shader.use();
+
     while(!glfwWindowShouldClose(window)) {
-        processInput(window);
+        processInput(window, shader);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        draw();
+        draw(shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

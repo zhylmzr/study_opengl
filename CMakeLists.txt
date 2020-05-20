@@ -23,6 +23,7 @@ elseif (WIN32)
     link_directories(lib)
 endif()
 
+add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
 add_executable(main ${DIR_SRCS})
 target_compile_options(main PUBLIC -g)
 target_link_libraries(main glfw)
