@@ -14,8 +14,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(include)
 
 file(GLOB_RECURSE LIBS lib/*.c(c|pp))
-aux_source_directory(src DIR_SRCS)
-list(APPEND DIR_SRCS ${LIBS})
 
 if (NOT WIN32)
     find_package(glfw3 REQUIRED)
@@ -24,6 +22,6 @@ elseif (WIN32)
 endif()
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
-add_executable(main ${DIR_SRCS})
+add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp)
 target_compile_options(main PUBLIC -g)
 target_link_libraries(main glfw)
