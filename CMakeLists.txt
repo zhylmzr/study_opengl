@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(include)
 
-file(GLOB_RECURSE LIBS lib/*.c(c|pp))
+file(GLOB_RECURSE LIBS lib/*.c lib/*.cpp)
 
 if (NOT WIN32)
     find_package(glfw3 REQUIRED)
@@ -22,6 +22,6 @@ elseif (WIN32)
 endif()
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
-add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp)
+add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h)
 target_compile_options(main PUBLIC -g)
 target_link_libraries(main glfw)

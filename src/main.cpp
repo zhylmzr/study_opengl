@@ -1,6 +1,7 @@
 #include "graphic.h"
 #include "shader.h"
 #include "rect.h"
+#include "ui.h"
 
 const int SCREEN_WIDTH = 300;
 const int SCREEN_HEIGHT = 300;
@@ -17,12 +18,15 @@ int main(int argc, char **args) {
 
     graphic.add_obj(&rect, &shader);
 
+    ui_init(graphic.getWindow());
     while (!graphic.termination()) {
         graphic.render_start();
+        ui_draw();
         graphic.render();
         graphic.render_end();
     }
 
+    ui_release();
     graphic.release();
     return 0;
 }

@@ -3,8 +3,13 @@
 
 using namespace std;
 
+bool frame_buffer_size_change;
+int window_change_width, window_change_height;
+
 void frame_change_callback(GLFWwindow *pWindow, int width, int height) {
-    glViewport(0, 0, width, height);
+    frame_buffer_size_change = true;
+    window_change_width = width;
+    window_change_height = height;
 }
 
 Graphic::Graphic(const string &title, int width, int height) {
@@ -23,7 +28,7 @@ void Graphic::init() {
 
     m_pWindow = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(m_pWindow);
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+    gladLoadGL();
     glfwSetFramebufferSizeCallback(m_pWindow, frame_change_callback);
 
 //     glEnable(GL_MULTISAMPLE);
@@ -32,9 +37,20 @@ void Graphic::init() {
 }
 
 void Graphic::render_start() {
-    event_handler();
+    // 如果窗口大小改变
+    if (frame_buffer_size_change) {
+        m_width = window_change_width;
+        m_height = window_change_height;
+        frame_buffer_size_change = false;
+    }
+
+    int display_w, display_h;
+    glfwGetFramebufferSize(m_pWindow, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    event_handler();
 }
 
 void Graphic::render_end() const {
@@ -112,4 +128,8 @@ void Graphic::init_resources() {
 //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 //    glGenerateMipmap(GL_TEXTURE_2D);
 //    stbi_image_free(data);
+}
+
+GLFWwindow *Graphic::getWindow() const {
+    return m_pWindow;
 }

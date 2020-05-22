@@ -25,6 +25,8 @@ public:
 
     void release();
 
+    GLFWwindow *getWindow() const;
+
 private:
     std::string m_title;
     int m_width;
