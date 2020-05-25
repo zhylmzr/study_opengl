@@ -22,6 +22,6 @@ elseif (WIN32)
 endif()
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
-add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h)
+add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h src/circle.cpp src/circle.h)
 target_compile_options(main PUBLIC -g)
 target_link_libraries(main glfw)

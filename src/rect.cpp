@@ -1,12 +1,9 @@
 #include "rect.h"
 #include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <GLFW/glfw3.h>
 
 using namespace std;
 
-Rect::Rect(int x, int y, int width, int height) {
+Rect::Rect(float x, float y, float width, float height) {
     m_x = x;
     m_y = y;
     m_width = width;
@@ -54,24 +51,7 @@ void Rect::init() {
 }
 
 void Rect::render(int window_width, int window_height) const {
-    m_shader->use();
-    glm::mat4 transform{1};
-
-    float scale_x = (float) m_width / (float) window_width;
-    float scale_y = (float) m_height / (float) window_height;
-
-    float current_x = -scale_x;
-    float current_y = scale_y;
-
-    float target_x = (float) m_x / ((float) window_width / 2);
-    float target_y = (float) m_y / ((float) window_height / 2);
-
-    transform = glm::translate(transform, glm::vec3(target_x - current_x, target_y - current_y, 0.0f));
-    transform = glm::rotate(transform, -(float) glfwGetTime(), glm::vec3(0, 0, 1));
-    transform = glm::scale(transform, glm::vec3(scale_x, scale_y, 0));
-
-    m_shader->setMat4("model", transform);
-
+    Sprite::render(window_width, window_height);
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

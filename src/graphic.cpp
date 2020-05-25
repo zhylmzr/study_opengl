@@ -3,15 +3,6 @@
 
 using namespace std;
 
-bool frame_buffer_size_change;
-int window_change_width, window_change_height;
-
-void frame_change_callback(GLFWwindow *pWindow, int width, int height) {
-    frame_buffer_size_change = true;
-    window_change_width = width;
-    window_change_height = height;
-}
-
 Graphic::Graphic(const string &title, int width, int height) {
     m_title = title;
     m_width = width;
@@ -29,21 +20,12 @@ void Graphic::init() {
     m_pWindow = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(m_pWindow);
     gladLoadGL();
-    glfwSetFramebufferSizeCallback(m_pWindow, frame_change_callback);
-
 //     glEnable(GL_MULTISAMPLE);
 
     init_resources();
 }
 
 void Graphic::render_start() {
-    // 如果窗口大小改变
-    if (frame_buffer_size_change) {
-        m_width = window_change_width;
-        m_height = window_change_height;
-        frame_buffer_size_change = false;
-    }
-
     int display_w, display_h;
     glfwGetFramebufferSize(m_pWindow, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
