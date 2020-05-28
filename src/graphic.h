@@ -17,7 +17,7 @@ public:
 
     void render_end() const;
 
-    void render() const;
+    void render();
 
     void add_obj(Sprite *sprite, Shader *shader);
 

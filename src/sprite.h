@@ -14,10 +14,14 @@ public:
 
     virtual void init() = 0;
 
+    void setCenter(float x, float y, float z);
+
 protected:
     Shader *m_shader;
 
-    float m_x, m_y, m_width, m_height;
+    glm::vec2 m_position{};                 // 位置
+    glm::vec2 m_center{0.5, 0.5};    // 中心点比例
+    glm::vec2 m_size{};                     // 大小
 
     unsigned m_vao{}; // 顶点数组对象
     unsigned m_vbo{}; // 顶点缓冲对象

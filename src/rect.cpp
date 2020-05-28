@@ -4,10 +4,10 @@
 using namespace std;
 
 Rect::Rect(float x, float y, float width, float height) {
-    m_x = x;
-    m_y = y;
-    m_width = width;
-    m_height = height;
+    m_position[0] = x;
+    m_position[1] = y;
+    m_size[0] = width;
+    m_size[1] = height;
     init();
 }
 
