@@ -49,7 +49,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
 
         vertexCode = vertexStream.str();
         fragmentCode = fragmentStream.str();
-    } catch (const ifstream::failure& e) {
+    } catch (const ifstream::failure&) {
         cerr << "[ERROR] Shader::Shader::FILE_READ_FAILURE" << endl;
     }
 

@@ -27,5 +27,13 @@ endif()
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
 add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h src/circle.cpp src/circle.h)
-target_compile_options(main PUBLIC -g)
+if (NOT WIN32)
+    # 生成调试信息
+    target_compile_options(main PUBLIC -g)
+elseif (WIN32)
+    # 生成调试信息
+    target_compile_options(main PUBLIC /Zi)
+    # 禁止警告
+    target_compile_options(main PUBLIC /wd4819)
+endif()
 target_link_libraries(main glfw)
