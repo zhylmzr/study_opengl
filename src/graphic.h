@@ -13,13 +13,13 @@ public:
 
     void init();
 
-    void render_start();
+    void renderStart();
 
-    void render_end() const;
+    void renderEnd() const;
 
     void render();
 
-    void add_obj(Sprite *sprite, Shader *shader);
+    void addSprite(Sprite *sprite, Shader *shader);
 
     bool termination() const;
 

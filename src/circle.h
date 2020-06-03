@@ -3,16 +3,14 @@
 #include "sprite.h"
 #include "shader.h"
 
-class Circle : public Sprite {
+class Circle final : public Sprite {
 public:
-    Circle(float x, float y, float radius);
+    Circle();
 
-    void render(int window_width, int window_height) const override;
+    void render(int window_width, int window_height) override;
 
     void init() override;
 
 private:
-    float m_radius;
-
-    int m_vertex_nums = 90;
+    int m_vertex_nums = 45;
 };

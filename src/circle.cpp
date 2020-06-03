@@ -4,22 +4,18 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #endif
+
 #include <cmath>
 
-
-void Circle::render(int window_width, int window_height) const {
+void Circle::render(int window_width, int window_height) {
     Sprite::render(window_width, window_height);
-
     glBindVertexArray(m_vao);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLE_FAN, 0, m_vertex_nums + 2);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-Circle::Circle(float x, float y, float radius): m_radius(radius) {
-    m_position[0] = x;
-    m_position[1] = y;
-    m_size[0] = m_size[1] = radius;
+Circle::Circle() {
     init();
 }
 

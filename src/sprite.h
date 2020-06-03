@@ -6,22 +6,24 @@
 
 class Sprite {
 public:
-    virtual void render(int window_width, int window_height) const;
 
-    virtual ~Sprite();
+    Sprite();
+    ~Sprite();
 
-    void use_shader(Shader *shader);
+    virtual void render(int window_width, int window_height);
+
+    void useShader(Shader *shader);
 
     virtual void init() = 0;
 
-    void setCenter(float x, float y, float z);
+    void setModel(const glm::mat4 &mat);
 
 protected:
     Shader *m_shader;
 
-    glm::vec2 m_position{};                 // 位置
-    glm::vec2 m_center{0.5, 0.5};    // 中心点比例
-    glm::vec2 m_size{};                     // 大小
+    glm::mat4 m_model{1};
+    glm::mat4 m_view{1};
+    glm::mat4 m_projection{1};
 
     unsigned m_vao{}; // 顶点数组对象
     unsigned m_vbo{}; // 顶点缓冲对象

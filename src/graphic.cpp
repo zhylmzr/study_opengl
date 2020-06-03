@@ -35,7 +35,7 @@ void Graphic::init() {
     init_resources();
 }
 
-void Graphic::render_start() {
+void Graphic::renderStart() {
     int display_w, display_h;
     glfwGetFramebufferSize(m_pWindow, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
@@ -45,7 +45,7 @@ void Graphic::render_start() {
     event_handler();
 }
 
-void Graphic::render_end() const {
+void Graphic::renderEnd() const {
     glfwSwapBuffers(m_pWindow);
     glfwPollEvents();
 }
@@ -76,8 +76,8 @@ void Graphic::render() {
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Graphic::add_obj(Sprite *sprite, Shader *shader) {
-    sprite->use_shader(shader);
+void Graphic::addSprite(Sprite *sprite, Shader *shader) {
+    sprite->useShader(shader);
     m_sprites.push_back(sprite);
 }
 

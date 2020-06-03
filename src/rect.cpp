@@ -3,11 +3,7 @@
 
 using namespace std;
 
-Rect::Rect(float x, float y, float width, float height) {
-    m_position[0] = x;
-    m_position[1] = y;
-    m_size[0] = width;
-    m_size[1] = height;
+Rect::Rect() {
     init();
 }
 
@@ -50,7 +46,7 @@ void Rect::init() {
     glEnableVertexAttribArray(2);
 }
 
-void Rect::render(int window_width, int window_height) const {
+void Rect::render(int window_width, int window_height) {
     Sprite::render(window_width, window_height);
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

@@ -3,6 +3,7 @@
 #include "rect.h"
 #include "ui.h"
 #include "circle.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 const int SCREEN_WIDTH = 300;
 const int SCREEN_HEIGHT = 300;
@@ -15,22 +16,23 @@ int main(int argc, char **args) {
     Shader shader("../resources/shader/vertex.glsl", "../resources/shader/fragment.glsl");
     shader.use();
 
-    Rect rect(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-    graphic.add_obj(&rect, &shader);
+    Rect rect;
+    glm::mat4 model{1};
+    model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
+    model = glm::rotate(model, glm::radians(55.0f), glm::vec3(-1, 0, 0));
+    rect.setModel(model);
 
-    Circle circle(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2);
-    circle.setCenter(0, 0, 0);
-    graphic.add_obj(&circle, &shader);
+    Circle circle;
 
-//    ui_init(graphic.getWindow());
+    graphic.addSprite(&rect, &shader);
+    graphic.addSprite(&circle, &shader);
+
     while (!graphic.termination()) {
-        graphic.render_start();
-//        ui_draw();
+        graphic.renderStart();
         graphic.render();
-        graphic.render_end();
+        graphic.renderEnd();
     }
 
-//    ui_release();
     graphic.release();
     return 0;
 }
