@@ -26,7 +26,7 @@ elseif (WIN32)
 endif()
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
-add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h src/circle.cpp src/circle.h)
+add_executable(main ${LIBS} src/main.cpp src/shader.cpp src/graphic.cpp src/sprite.cpp src/rect.cpp src/ui.cpp src/ui.h src/circle.cpp src/circle.h src/cube.cpp src/cube.h)
 if (NOT WIN32)
     # 生成调试信息
     target_compile_options(main PUBLIC -g)

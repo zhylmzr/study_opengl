@@ -1,8 +1,7 @@
 #include "graphic.h"
 #include "shader.h"
-#include "rect.h"
 #include "ui.h"
-#include "circle.h"
+#include "cube.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 const int SCREEN_WIDTH = 300;
@@ -16,16 +15,14 @@ int main(int argc, char **args) {
     Shader shader("../resources/shader/vertex.glsl", "../resources/shader/fragment.glsl");
     shader.use();
 
-    Rect rect;
+    Cube cube;
     glm::mat4 model{1};
+    model = glm::translate(model, glm::vec3(0, 0, -1));
     model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
     model = glm::rotate(model, glm::radians(55.0f), glm::vec3(-1, 0, 0));
-    rect.setModel(model);
+    cube.setModel(model);
 
-    Circle circle;
-
-    graphic.addSprite(&rect, &shader);
-    graphic.addSprite(&circle, &shader);
+    graphic.addSprite(&cube, &shader);
 
     while (!graphic.termination()) {
         graphic.renderStart();
