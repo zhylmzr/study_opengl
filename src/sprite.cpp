@@ -28,6 +28,7 @@ void Sprite::render(int window_width, int window_height) {
     m_shader->use();
 
     m_projection = glm::perspective(glm::radians(90.0f), (float) window_width / window_height, 0.1f, 100.0f);
+//    m_projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, 0.1f, 100.0f);
 
     m_shader->setMat4("model", m_model);
     m_shader->setMat4("view", m_view);
