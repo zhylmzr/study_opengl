@@ -40,7 +40,7 @@ void Graphic::renderStart() {
     glfwGetFramebufferSize(m_pWindow, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     event_handler();
 }
@@ -101,6 +101,7 @@ void Graphic::release() {
 
 void Graphic::init_resources() {
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 //    glGenTextures(1, &m_tex0);
 //    glBindTexture(GL_TEXTURE_2D, m_tex0);
 //

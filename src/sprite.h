@@ -21,9 +21,9 @@ public:
 protected:
     Shader *m_shader;
 
-    glm::mat4 m_model{1};
-    glm::mat4 m_view{1};
-    glm::mat4 m_projection{1};
+    glm::mat4 *m_model;
+    glm::mat4 *m_view;
+    glm::mat4 *m_projection;
 
     unsigned m_vao{}; // 顶点数组对象
     unsigned m_vbo{}; // 顶点缓冲对象
