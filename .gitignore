@@ -1,3 +1,8 @@
 build
 .Ds_Store
 cmake-build-debug
+.xmake
+compile_commands.json
+c_cpp_properties.json
+settings.json
+.idea
