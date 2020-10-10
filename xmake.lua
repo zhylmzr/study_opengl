@@ -2,6 +2,7 @@ add_rules("mode.debug", "mode.release")
 
 target("opengl_tutorial")
     set_kind("binary")
+    add_frameworks("Cocoa", "IOKit")
     add_files("src/*.cpp", "lib/**/*.cpp", "lib/**/*.c")
     
     set_rundir("src")
