@@ -1,12 +1,5 @@
 #include "circle.h"
 
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#include <math.h>
-#endif
-
-#include <cmath>
-
 void Circle::render(int window_width, int window_height) {
     Sprite::render(window_width, window_height);
     glBindVertexArray(m_vao);

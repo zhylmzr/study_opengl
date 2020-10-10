@@ -2,6 +2,12 @@
 
 #include "shader.h"
 
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
+#include <cmath>
+
 #define SAFE_DELETE_BUFFER(buffer)  if(!buffer) glDeleteBuffers(1, &buffer);
 
 class Sprite {
